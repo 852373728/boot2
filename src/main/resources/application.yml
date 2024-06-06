@@ -1,0 +1,12 @@
+logging:
+  level:
+    org:
+      springframework:
+        security: trace
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    username: root
+    password: 123456
+    url: jdbc:mysql://192.168.2.102:3306/sunqilin?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    driver-class-name: com.mysql.cj.jdbc.Driver
