@@ -7,6 +7,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.csrf.CsrfToken;
+import org.yaml.snakeyaml.events.Event;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +26,10 @@ public class JsonAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
+        CsrfToken token = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+        if (token!=null){
+            response.setHeader(token.getHeaderName(),token.getToken());
+        }
         logger.info("未登录返回json类型的消息");
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String,Object> result = new HashMap<>();

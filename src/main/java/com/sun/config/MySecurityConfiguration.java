@@ -30,7 +30,7 @@ public class MySecurityConfiguration{
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, UserService userService) throws Exception {
         http.authorizeRequests().
-                antMatchers("/login","/error","/user/hello","/favicon.ico").anonymous().
+                antMatchers("/login","/error").anonymous().
                 anyRequest().authenticated();
 
         ExceptionHandlingConfigurer<HttpSecurity> httpSecurityExceptionHandlingConfigurer = http.exceptionHandling();
@@ -39,6 +39,8 @@ public class MySecurityConfiguration{
         http.userDetailsService(userService);
 
         http.formLogin();
+
+
 
         // http.addFilterAfter(new UnAuthenticationJsonFilter(), SecurityContextPersistenceFilter.class);
         return http.build();
