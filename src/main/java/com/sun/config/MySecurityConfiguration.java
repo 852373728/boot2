@@ -38,9 +38,7 @@ public class MySecurityConfiguration{
 
         http.userDetailsService(userService);
 
-        http.formLogin();
-
-
+        http.formLogin().failureHandler(new MyAuthenticationFailureHandler());
 
         // http.addFilterAfter(new UnAuthenticationJsonFilter(), SecurityContextPersistenceFilter.class);
         return http.build();
