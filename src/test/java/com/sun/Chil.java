@@ -1,22 +1,16 @@
 package com.sun;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 /**
  * @date 2024/5/23
  */
-public class Chil extends Pae{
+public class Chil {
 
 
-    public Chil() {
-        qer();
-    }
-
-    @Override
-    public void qer() {
-        System.out.println("子类方法执行");
-    }
-
-    @Override
-    public void cc() {
-        System.out.println("子类后行");
+    public static void main(String[] args) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String result = encoder.encode("123456");
+        System.out.println(result);
     }
 }
