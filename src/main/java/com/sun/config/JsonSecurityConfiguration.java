@@ -31,6 +31,7 @@ public class JsonSecurityConfiguration {
                 successHandler(new JsonRequestAwareAuthenticationSuccessHandler())
                 ;
 
+        http.logout().logoutSuccessHandler(new JsonLogoutSuccessHandler());
         http.csrf().disable();
         return http.build();
     }

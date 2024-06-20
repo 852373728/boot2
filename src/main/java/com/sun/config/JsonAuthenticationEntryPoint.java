@@ -41,7 +41,8 @@ public class JsonAuthenticationEntryPoint implements AuthenticationEntryPoint {
         PrintWriter out = response.getWriter();
 
         response.setStatus(HttpStatus.FORBIDDEN.value());
-        out.println(objectMapper.writeValueAsString(result));
+        out.write(objectMapper.writeValueAsString(result));
         out.flush();
+        out.close();
     }
 }

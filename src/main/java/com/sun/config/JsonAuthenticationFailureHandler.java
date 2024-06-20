@@ -36,7 +36,8 @@ public class JsonAuthenticationFailureHandler implements AuthenticationFailureHa
         PrintWriter out = response.getWriter();
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        out.println(objectMapper.writeValueAsString(result));
+        out.write(objectMapper.writeValueAsString(result));
         out.flush();
+        out.close();
     }
 }
