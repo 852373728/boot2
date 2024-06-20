@@ -26,8 +26,12 @@ public class JsonSecurityConfiguration {
         httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(new JsonAuthenticationEntryPoint());
         http.userDetailsService(userService);
 
-        http.formLogin().failureHandler(new JsonAuthenticationFailureHandler());
+        http.formLogin().
+                failureHandler(new JsonAuthenticationFailureHandler()).
+                successHandler(new JsonRequestAwareAuthenticationSuccessHandler())
+                ;
 
+        http.csrf().disable();
         return http.build();
     }
 
