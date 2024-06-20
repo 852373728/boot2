@@ -1,11 +1,14 @@
 package com.sun.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @date 2024/5/23
@@ -17,6 +20,8 @@ public class User implements UserDetails {
 
     private String username;
     private String password;
+    @TableField(exist = false)
+    private Set<? extends GrantedAuthority> authorities;
     private boolean enabled=true;
 
     public void setUsername(String username) {
@@ -31,10 +36,16 @@ public class User implements UserDetails {
         this.enabled = enabled;
     }
 
+    public void setAuthorities(Set<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.authorities;
     }
+
+
 
     @Override
     public String getPassword() {
