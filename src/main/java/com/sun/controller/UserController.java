@@ -26,7 +26,6 @@ public class UserController {
 
 
 
-
         Map<String,Object> pa= new HashMap<>();
         pa.put("abc","哈哈");
         pa.put("url","/user/hello");

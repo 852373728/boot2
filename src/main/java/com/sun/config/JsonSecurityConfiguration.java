@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -35,6 +37,7 @@ public class JsonSecurityConfiguration {
                 successHandler(new JsonRequestAwareAuthenticationSuccessHandler());
         http.logout().logoutSuccessHandler(new JsonLogoutSuccessHandler());
         http.csrf().disable();
+
         return http.build();
     }
 
