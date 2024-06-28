@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @EnableWebSecurity
@@ -20,7 +21,7 @@ public class JsonSecurityConfiguration implements InitializingBean {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, UserService userService) throws Exception {
         http.authorizeRequests().
-                antMatchers("/login","/error").permitAll().
+                antMatchers("/login","/error","/captcha.jpg").permitAll().
                 antMatchers("/user/**").hasAnyAuthority("admin").
                 antMatchers("/order/**").hasAnyAuthority("admin","user").
                 anyRequest().authenticated();
@@ -34,6 +35,8 @@ public class JsonSecurityConfiguration implements InitializingBean {
                 successHandler(new JsonRequestAwareAuthenticationSuccessHandler());
         http.logout().logoutSuccessHandler(new JsonLogoutSuccessHandler());
         http.csrf().disable();
+
+        http.addFilterBefore(new CaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
 
 
 
