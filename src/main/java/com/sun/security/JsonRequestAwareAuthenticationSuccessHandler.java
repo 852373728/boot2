@@ -1,12 +1,12 @@
-package com.sun.config;
+package com.sun.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.csrf.CsrfToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,28 +16,31 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JsonAuthenticationFailureHandler implements AuthenticationFailureHandler {
-    private static final Log logger = LogFactory.getLog(JsonAuthenticationFailureHandler.class);
-
+/**
+ * @date 2024/6/20
+ */
+@Slf4j
+public class JsonRequestAwareAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-
-
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
+        clearAuthenticationAttributes(request);
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
 
-        logger.info(exception.getMessage());
+        log.info("登录成功：{}",authentication);
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String,Object> result = new HashMap<>();
-        result.put("message",exception.getMessage());
-        result.put("status",false);
+        result.put("message","登录成功");
+        result.put("status",true);
+        result.put("object",authentication);
 
         PrintWriter out = response.getWriter();
 
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(HttpStatus.OK.value());
         out.write(objectMapper.writeValueAsString(result));
         out.flush();
         out.close();
+
     }
 }
