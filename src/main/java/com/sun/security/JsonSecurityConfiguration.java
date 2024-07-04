@@ -37,7 +37,7 @@ public class JsonSecurityConfiguration implements InitializingBean {
         http.logout().logoutSuccessHandler(new JsonLogoutSuccessHandler());
         http.csrf().disable();
 
-        http.addFilterBefore(new CaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
+       // http.addFilterBefore(new CaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
 
         RememberMeConfigurer<HttpSecurity> rememberMeConfigurer = http.rememberMe();
         rememberMeConfigurer.key("sunqilin");
