@@ -1,5 +1,6 @@
 package com.sun.security;
 
+import com.sun.service.MyPersistentTokenRepositoryService;
 import com.sun.service.UserService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,14 +12,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+
+import javax.annotation.Resource;
 
 
 @EnableWebSecurity
 @Configuration
 public class JsonSecurityConfiguration implements InitializingBean {
     private static final Log logger = LogFactory.getLog(JsonSecurityConfiguration.class);
+
+    @Resource
+    private MyPersistentTokenRepositoryService myPersistentTokenRepositoryService;
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, UserService userService) throws Exception {
@@ -43,7 +48,7 @@ public class JsonSecurityConfiguration implements InitializingBean {
         RememberMeConfigurer<HttpSecurity> rememberMeConfigurer = http.rememberMe();
         String rememberKey = "sunqilin";
         rememberMeConfigurer.key(rememberKey);
-        rememberMeConfigurer.rememberMeServices(new PersistentTokenBasedRememberMeServices(rememberKey,userService,null));
+        rememberMeConfigurer.rememberMeServices(new PersistentTokenBasedRememberMeServices(rememberKey,userService,myPersistentTokenRepositoryService));
 
         return http.build();
     }
