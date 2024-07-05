@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configurers.ExceptionH
 import org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 
 
 @EnableWebSecurity
@@ -40,7 +41,9 @@ public class JsonSecurityConfiguration implements InitializingBean {
        // http.addFilterBefore(new CaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
 
         RememberMeConfigurer<HttpSecurity> rememberMeConfigurer = http.rememberMe();
-        rememberMeConfigurer.key("sunqilin");
+        String rememberKey = "sunqilin";
+        rememberMeConfigurer.key(rememberKey);
+        rememberMeConfigurer.rememberMeServices(new PersistentTokenBasedRememberMeServices(rememberKey,userService,null));
 
         return http.build();
     }
