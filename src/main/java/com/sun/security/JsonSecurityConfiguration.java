@@ -31,6 +31,7 @@ public class JsonSecurityConfiguration implements InitializingBean {
                 antMatchers("/login","/error","/captcha.jpg").permitAll().
                 antMatchers("/user/**").hasAnyAuthority("admin").
                 antMatchers("/order/**").hasAnyAuthority("admin","user").
+                antMatchers("/remember/**").rememberMe().
                 anyRequest().authenticated();
         ExceptionHandlingConfigurer<HttpSecurity> httpSecurityExceptionHandlingConfigurer = http.exceptionHandling();
         httpSecurityExceptionHandlingConfigurer.authenticationEntryPoint(new JsonAuthenticationEntryPoint());
