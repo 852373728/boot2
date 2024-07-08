@@ -41,7 +41,7 @@ public class JsonSecurityConfiguration implements InitializingBean {
         http.formLogin().
                 failureHandler(new JsonAuthenticationFailureHandler()).
                 successHandler(new JsonRequestAwareAuthenticationSuccessHandler());
-        http.logout().logoutSuccessHandler(new JsonLogoutSuccessHandler());
+        http.logout().logoutSuccessHandler(new JsonLogoutSuccessHandler()).addLogoutHandler(new JsonLogout());
         http.csrf().disable();
 
        // http.addFilterBefore(new CaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
