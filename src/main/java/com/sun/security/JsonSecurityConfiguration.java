@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer;
+import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 
@@ -43,8 +44,8 @@ public class JsonSecurityConfiguration implements InitializingBean {
                 successHandler(new JsonRequestAwareAuthenticationSuccessHandler());
         http.logout().logoutSuccessHandler(new JsonLogoutSuccessHandler()).addLogoutHandler(new JsonLogout());
         http.csrf().disable();
-
-       // http.addFilterBefore(new CaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
+        SessionManagementConfigurer<HttpSecurity>.SessionFixationConfigurer sessionFixationConfigurer = http.sessionManagement().sessionFixation();
+        // http.addFilterBefore(new CaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
 
         RememberMeConfigurer<HttpSecurity> rememberMeConfigurer = http.rememberMe();
         String rememberKey = "sunqilin";
