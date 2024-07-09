@@ -4,33 +4,30 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.web.csrf.CsrfToken;
-import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredEvent;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * @date 2024/7/9
- */
-public class JsonInvalidSessionStrategy implements InvalidSessionStrategy {
-    private final Log logger = LogFactory.getLog(getClass());
+public class JsonSessionInformationExpiredStrategy implements SessionInformationExpiredStrategy {
+    Log logger = LogFactory.getLog(getClass());
 
     @Override
-    public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException, ServletException {
+        HttpServletResponse response = event.getResponse();
 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=UTF-8");
 
-        logger.info("会话过期");
+        logger.info("已在别处登录");
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String,Object> result = new HashMap<>();
-        result.put("message","登录已超时，请重新登录");
+        result.put("message","该账号已在别处登录，当前登录已失效");
         result.put("status",false);
 
         PrintWriter out = response.getWriter();
@@ -39,5 +36,6 @@ public class JsonInvalidSessionStrategy implements InvalidSessionStrategy {
         out.write(objectMapper.writeValueAsString(result));
         out.flush();
         out.close();
+
     }
 }
