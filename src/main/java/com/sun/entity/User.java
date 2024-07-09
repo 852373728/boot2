@@ -24,6 +24,22 @@ public class User implements UserDetails {
     private Set<? extends GrantedAuthority> authorities;
     private boolean enabled=true;
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
+            return this.username.equals(((User) obj).username);
+        }
+        return false;
+    }
+
+    /**
+     * Returns the hashcode of the {@code username}.
+     */
+    @Override
+    public int hashCode() {
+        return this.username.hashCode();
+    }
+
     public void setUsername(String username) {
         this.username = username;
     }

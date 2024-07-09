@@ -44,7 +44,10 @@ public class JsonSecurityConfiguration implements InitializingBean {
                 successHandler(new JsonRequestAwareAuthenticationSuccessHandler());
         http.logout().logoutSuccessHandler(new JsonLogoutSuccessHandler()).addLogoutHandler(new JsonLogout());
         http.csrf().disable();
-        SessionManagementConfigurer<HttpSecurity>.SessionFixationConfigurer sessionFixationConfigurer = http.sessionManagement().sessionFixation();
+        http.sessionManagement().maximumSessions(1);
+        http.sessionManagement().invalidSessionStrategy(new JsonInvalidSessionStrategy());
+
+        //添加验证码过滤器
         // http.addFilterBefore(new CaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
 
         RememberMeConfigurer<HttpSecurity> rememberMeConfigurer = http.rememberMe();
