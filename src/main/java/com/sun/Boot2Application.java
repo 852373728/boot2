@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration;
 
 
 @SpringBootApplication
@@ -21,12 +22,12 @@ public class Boot2Application {
     public static void main(String[] args) {
 
         ConfigurableApplicationContext run = SpringApplication.run(Boot2Application.class, args);
-//        String[] beanDefinitionNames = run.getBeanDefinitionNames();
-//
-//
-//        for (String beanDefinitionName : beanDefinitionNames) {
-//            System.out.println(beanDefinitionName);
-//        }
+        String[] beanDefinitionNames = run.getBeanDefinitionNames();
+        Object sessionRepository = run.getBean("sessionRepository");
+
+        for (String beanDefinitionName : beanDefinitionNames) {
+            System.out.println(beanDefinitionName);
+        }
         logger.info("启动完成");
 
 

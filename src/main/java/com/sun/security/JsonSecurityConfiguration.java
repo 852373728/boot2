@@ -14,12 +14,15 @@ import org.springframework.security.config.annotation.web.configurers.RememberMe
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 import javax.annotation.Resource;
 
 
 @EnableWebSecurity
 @Configuration
+@EnableRedisHttpSession
 public class JsonSecurityConfiguration implements InitializingBean {
     private static final Log logger = LogFactory.getLog(JsonSecurityConfiguration.class);
 
@@ -46,7 +49,6 @@ public class JsonSecurityConfiguration implements InitializingBean {
         http.csrf().disable();
 
         http.sessionManagement().invalidSessionStrategy(new JsonInvalidSessionStrategy()).maximumSessions(1).expiredSessionStrategy(new JsonSessionInformationExpiredStrategy());
-
         //添加验证码过滤器
         // http.addFilterBefore(new CaptchaFilter(), UsernamePasswordAuthenticationFilter.class);
 

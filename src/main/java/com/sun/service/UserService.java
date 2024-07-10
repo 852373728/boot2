@@ -3,8 +3,10 @@ package com.sun.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.sun.entity.Authorities;
 import com.sun.entity.User;
+import com.sun.event.UserEvent;
 import com.sun.mapper.AuthoritiesMapper;
 import com.sun.mapper.UsersMapper;
+import org.springframework.context.ApplicationListener;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,7 +20,7 @@ import java.util.List;
  * @date 2024/5/23
  */
 @Service
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService, ApplicationListener<UserEvent> {
 
     @Resource
     private UsersMapper usersMapper;
@@ -52,4 +54,9 @@ public class UserService implements UserDetailsService {
     }
 
 
+    @Override
+    public void onApplicationEvent(UserEvent event) {
+        Object source = event.getSource();
+        System.out.println(source);
+    }
 }
