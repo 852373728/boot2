@@ -22,7 +22,6 @@ import javax.annotation.Resource;
 
 @EnableWebSecurity
 @Configuration
-@EnableRedisHttpSession
 public class JsonSecurityConfiguration implements InitializingBean {
     private static final Log logger = LogFactory.getLog(JsonSecurityConfiguration.class);
 
