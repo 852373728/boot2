@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.annotation.web.configurers.RememberMeConfigurer;
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
@@ -31,7 +33,7 @@ public class JsonSecurityConfiguration implements InitializingBean {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, UserService userService) throws Exception {
         http.authorizeRequests().
-                antMatchers("/login","/error","/captcha.jpg").permitAll().
+                antMatchers("/login","/error","/captcha.jpg","/registration").permitAll().
                 antMatchers("/user/**").hasAnyAuthority("admin").
                 antMatchers("/order/**").hasAnyAuthority("admin","user").
                 antMatchers("/remember/**").rememberMe().
@@ -56,7 +58,14 @@ public class JsonSecurityConfiguration implements InitializingBean {
         rememberMeConfigurer.key(rememberKey);
         rememberMeConfigurer.rememberMeServices(new PersistentTokenBasedRememberMeServices(rememberKey,userService,myPersistentTokenRepositoryService));
 
+
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
 

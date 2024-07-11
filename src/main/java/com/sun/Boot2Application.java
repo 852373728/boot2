@@ -23,8 +23,6 @@ public class Boot2Application {
 
         ConfigurableApplicationContext run = SpringApplication.run(Boot2Application.class, args);
         String[] beanDefinitionNames = run.getBeanDefinitionNames();
-        Object sessionRepository = run.getBean("sessionRepository");
-
         for (String beanDefinitionName : beanDefinitionNames) {
             System.out.println(beanDefinitionName);
         }
