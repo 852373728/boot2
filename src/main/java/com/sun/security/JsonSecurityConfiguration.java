@@ -33,7 +33,7 @@ public class JsonSecurityConfiguration implements InitializingBean {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http, UserService userService) throws Exception {
         http.authorizeRequests().
-                antMatchers("/login","/error","/captcha.jpg","/registration").permitAll().
+                antMatchers("/login","/error","/captcha.jpg","/registration","/**.html","/anon/**").permitAll().
                 antMatchers("/user/**").hasAnyAuthority("admin").
                 antMatchers("/order/**").hasAnyAuthority("admin","user").
                 antMatchers("/remember/**").rememberMe().
@@ -59,6 +59,7 @@ public class JsonSecurityConfiguration implements InitializingBean {
         rememberMeConfigurer.rememberMeServices(new PersistentTokenBasedRememberMeServices(rememberKey,userService,myPersistentTokenRepositoryService));
 
 
+        http.cors();
         return http.build();
     }
 
